@@ -5896,10 +5896,10 @@ prelude-ls@~1.1.2:
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
   integrity sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=
 
-prettier-plugin-jsdoc@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/prettier-plugin-jsdoc/-/prettier-plugin-jsdoc-0.2.1.tgz#0e91eaaa96f5f61af0f93cd425b6122a4e4b8be5"
-  integrity sha512-F1zRw73iVYov39RrOhTlbNTvuvJGw18kqfyWc4qT0iNIGI8UDVCo90aK6KYNGt3I6IUOCGiXQz4TwdcvWNF+Kw==
+prettier-plugin-jsdoc@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/prettier-plugin-jsdoc/-/prettier-plugin-jsdoc-0.2.4.tgz#ccc5fa607dbe773fde60ee92ebda790845f32df3"
+  integrity sha512-xOVH6pFZ5JKLilVWLwAd19IVuNyDTYGqgZ+0g6lmEMECOSFL4IqvQVuz/afcg42/JrRQB1Lr3zzLSm7p4B241A==
   dependencies:
     comment-parser "^0.7.6"
     linguist-languages "^7.11.1"
