@@ -262,17 +262,13 @@ Prettier can restrict itself to only format files that contain a special comment
 For example, a file with the following as its first comment will be formatted when `--require-pragma` is supplied:
 
 ```js
-/**
- * @prettier
- */
+/** @prettier */
 ```
 
 or
 
 ```js
-/**
- * @format
- */
+/** @format */
 ```
 
 | Default | CLI Override       | API Override            |

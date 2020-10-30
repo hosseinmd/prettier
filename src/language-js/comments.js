@@ -936,7 +936,7 @@ function handleTSMappedTypeComments(
 /**
  * @param {any} node
  * @param {(comment: any) => boolean} fn
- * @returns boolean
+ * @returns {boolean}
  */
 function hasLeadingComment(node, fn = () => true) {
   if (node.leadingComments) {

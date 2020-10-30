@@ -4,12 +4,10 @@ const {
   builders: { concat, group },
 } = require("../document");
 
-/**
- *     v-for="... in ..."
- *     v-for="... of ..."
- *     v-for="(..., ...) in ..."
- *     v-for="(..., ...) of ..."
- */
+//     v-for="... in ..."
+//     v-for="... of ..."
+//     v-for="(..., ...) in ..."
+//     v-for="(..., ...) of ..."
 function printVueFor(value, textToDoc) {
   const { left, operator, right } = parseVueFor(value);
   return concat([

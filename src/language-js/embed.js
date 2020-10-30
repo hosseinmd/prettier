@@ -183,10 +183,7 @@ function embed(path, print, textToDoc, options) {
   }
 }
 
-/**
- * md`...`
- * markdown`...`
- */
+/** Md`...` markdown`...` */
 function isMarkdown(path) {
   const node = path.getValue();
   const parent = path.getParentNode();
@@ -259,10 +256,11 @@ function transformCssDoc(quasisDoc, parentNode, expressionDocs) {
   return concat(["`", indent(concat([hardline, newDoc])), softline, "`"]);
 }
 
-// Search all the placeholders in the quasisDoc tree
-// and replace them with the expression docs one by one
-// returns a new doc with all the placeholders replaced,
-// or null if it couldn't replace any expression
+/**
+ * Search all the placeholders in the quasisDoc tree and replace them with the
+ * expression docs one by one returns a new doc with all the placeholders
+ * replaced, or null if it couldn't replace any expression
+ */
 function replacePlaceholders(quasisDoc, expressionDocs) {
   if (!expressionDocs || !expressionDocs.length) {
     return quasisDoc;
@@ -325,8 +323,10 @@ function printGraphqlComments(lines) {
   lines
     .map((textLine) => textLine.trim())
     .forEach((textLine, i, array) => {
-      // Lines are either whitespace only, or a comment (with potential whitespace
-      // around it). Drop whitespace-only lines.
+      /**
+       * Lines are either whitespace only, or a comment (with potential
+       * whitespace around it). Drop whitespace-only lines.
+       */
       if (textLine === "") {
         return;
       }
@@ -347,11 +347,10 @@ function printGraphqlComments(lines) {
 }
 
 /**
- * Template literal in these contexts:
- * <style jsx>{`div{color:red}`}</style>
- * css``
- * css.global``
- * css.resolve``
+ * Template literal in these contexts: <style jsx>{`div{color:red}`}</style>
+ *     css``
+ *     css.global``
+ *     css.resolve``
  */
 function isStyledJsx(path) {
   const node = path.getValue();
@@ -381,18 +380,19 @@ function isStyledJsx(path) {
 
 /**
  * Angular Components can have:
- * - Inline HTML template
- * - Inline CSS styles
  *
- * ...which are both within template literals somewhere
- * inside of the Component decorator factory.
+ *     Inline HTML template
+ *     Inline CSS styles
  *
- * E.g.
- * @Component({
- *  template: `<div>...</div>`,
- *  styles: [`h1 { color: blue; }`]
- * })
+ * ...which are both within template literals somewhere inside of the Component
+ * decorator factory.
  */
+
+// E.g.
+// @Component({
+//  template: `<div>...</div>`,
+//  styles: [`h1 { color: blue; }`]
+// })
 function isAngularComponentStyles(path) {
   return path.match(
     (node) => node.type === "TemplateLiteral",
@@ -426,9 +426,7 @@ const angularComponentObjectExpressionPredicates = [
   (node, name) => node.type === "Decorator" && name === "expression",
 ];
 
-/**
- * styled-components template literals
- */
+/** Styled-components template literals */
 function isStyledComponents(path) {
   const parent = path.getParentNode();
 
@@ -471,9 +469,7 @@ function isStyledComponents(path) {
   }
 }
 
-/**
- * JSX element with CSS prop
- */
+/** JSX element with CSS prop */
 function isCssProp(path) {
   const parent = path.getParentNode();
   const parentParent = path.getParentNode(1);
@@ -523,12 +519,13 @@ function isGraphQL(path) {
   );
 }
 
+/**
+ * This checks for a leading comment that is exactly `\/* GraphQL *\/` In order
+ * to be in line with other implementations of this comment tag we will not
+ * trim the comment value and we will expect exactly one space on either side
+ * of the GraphQL string Also see ./clean.js
+ */
 function hasLanguageComment(node, languageName) {
-  // This checks for a leading comment that is exactly `/* GraphQL */`
-  // In order to be in line with other implementations of this comment tag
-  // we will not trim the comment value and we will expect exactly one space on
-  // either side of the GraphQL string
-  // Also see ./clean.js
   return hasLeadingComment(
     node,
     (comment) =>
@@ -537,8 +534,9 @@ function hasLanguageComment(node, languageName) {
 }
 
 /**
- *     - html`...`
- *     - HTML comment block
+ * -
+ *     html`...`
+ *     HTML comment block
  */
 function isHtml(path) {
   return (
@@ -554,7 +552,7 @@ function isHtml(path) {
   );
 }
 
-// The counter is needed to distinguish nested embeds.
+/** The counter is needed to distinguish nested embeds. */
 let htmlTemplateLiteralCounter = 0;
 
 function printHtmlTemplateLiteral(

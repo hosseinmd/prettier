@@ -263,7 +263,7 @@ function printPathNoParens(path, options, print, args) {
     return htmlBinding;
   }
 
-  /** @type{Doc[]} */
+  /** @type {Doc[]} */
   let parts = [];
 
   switch (n.type) {
@@ -3769,12 +3769,10 @@ function printMethodInternal(path, options, print) {
 }
 
 function printJestEachTemplateLiteral(path, options, print) {
-  /**
-   * a    | b    | expected
-   * ${1} | ${1} | ${2}
-   * ${1} | ${2} | ${3}
-   * ${2} | ${1} | ${3}
-   */
+  // a    | b    | expected
+  // ${1} | ${1} | ${2}
+  // ${1} | ${2} | ${3}
+  // ${2} | ${1} | ${3}
   const node = path.getNode();
   const headerNames = node.quasis[0].value.raw.trim().split(/\s*\|\s*/);
   if (
@@ -4122,7 +4120,7 @@ function printExportDeclaration(path, options, print) {
 
   const semi = options.semi ? ";" : "";
 
-  /** @type{Doc[]} */
+  /** @type {Doc[]} */
   const parts = ["export "];
 
   const isDefault = decl.default || decl.type === "ExportDefaultDeclaration";
@@ -4859,14 +4857,21 @@ function shouldInlineLogicalExpression(node) {
   return false;
 }
 
-// For binary expressions to be consistent, we need to group
-// subsequent operators with the same precedence level under a single
-// group. Otherwise they will be nested such that some of them break
-// onto new lines but not all. Operators with the same precedence
-// level should either all break or not. Because we group them by
-// precedence level and the AST is structured based on precedence
-// level, things are naturally broken up correctly, i.e. `&&` is
-// broken before `+`.
+/**
+ * For binary expressions to be consistent, we need to group subsequent
+ * operators with the same precedence level under a single group. Otherwise
+ * they will be nested such that some of them break onto new lines but not all.
+ * Operators with the same precedence level should either all break or not.
+ * Because we group them by precedence level and the AST is structured based on
+ * precedence level, things are naturally broken up correctly, i.e. `&&` is
+ * broken before `+`.
+ *
+ * @param {any} path
+ * @param {any} print
+ * @param {{ parser: string; originalText: string }} options
+ * @param {boolean} isNested
+ * @param {boolean} isInsideParenthesis
+ */
 function printBinaryishExpressions(
   path,
   print,
@@ -4874,7 +4879,7 @@ function printBinaryishExpressions(
   isNested,
   isInsideParenthesis
 ) {
-  /** @type{Doc[]} */
+  /** @type {Doc[]} */
   let parts = [];
 
   const node = path.getValue();
@@ -4961,9 +4966,11 @@ function printBinaryishExpressions(
       shouldGroup ? group(right, { shouldBreak }) : right
     );
 
-    // The root comments are already printed, but we need to manually print
-    // the other ones since we don't call the normal print on BinaryExpression,
-    // only for the left and right parts
+    /**
+     * The root comments are already printed, but we need to manually print the
+     * other ones since we don't call the normal print on BinaryExpression,
+     * only for the left and right parts
+     */
     if (isNested && node.comments) {
       parts = normalizeParts(
         comments.printComments(path, () => concat(parts), options).parts

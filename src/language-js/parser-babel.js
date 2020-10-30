@@ -257,7 +257,7 @@ const babelFlow = { ...babel, parse: parseFlow };
 const babelTypeScript = { ...babel, parse: parseTypeScript };
 const babelExpression = { ...babel, parse: parseExpression };
 
-// Export as a plugin so we can reuse the same bundle for UMD loading
+/** Export as a plugin so we can reuse the same bundle for UMD loading */
 module.exports = {
   parsers: {
     babel,
@@ -278,9 +278,9 @@ module.exports = {
     },
     /** @internal */
     __js_expression: babelExpression,
-    /** for vue filter */
+    /** For vue filter */
     __vue_expression: babelExpression,
-    /** for vue event binding to handle semicolon */
+    /** For vue event binding to handle semicolon */
     __vue_event_binding: babel,
   },
 };

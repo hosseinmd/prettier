@@ -9,13 +9,15 @@ const notAsciiRegex = /[^\x20-\x7F]/;
 
 const getPenultimate = (arr) => arr[arr.length - 2];
 
-/**
- * @typedef {{backwards?: boolean}} SkipOptions
- */
+/** @typedef {{ backwards?: boolean }} SkipOptions */
 
 /**
  * @param {string | RegExp} chars
- * @returns {(text: string, index: number | false, opts?: SkipOptions) => number | false}
+ * @returns {(
+ *   text: string,
+ *   index: number | false,
+ *   opts?: SkipOptions
+ * ) => number | false}
  */
 function skip(chars) {
   return (text, index, opts) => {
@@ -55,19 +57,35 @@ function skip(chars) {
 }
 
 /**
- * @type {(text: string, index: number | false, opts?: SkipOptions) => number | false}
+ * @type {(
+ *   text: string,
+ *   index: number | false,
+ *   opts?: SkipOptions
+ * ) => number | false}
  */
 const skipWhitespace = skip(/\s/);
 /**
- * @type {(text: string, index: number | false, opts?: SkipOptions) => number | false}
+ * @type {(
+ *   text: string,
+ *   index: number | false,
+ *   opts?: SkipOptions
+ * ) => number | false}
  */
 const skipSpaces = skip(" \t");
 /**
- * @type {(text: string, index: number | false, opts?: SkipOptions) => number | false}
+ * @type {(
+ *   text: string,
+ *   index: number | false,
+ *   opts?: SkipOptions
+ * ) => number | false}
  */
 const skipToLineEnd = skip(",; \t");
 /**
- * @type {(text: string, index: number | false, opts?: SkipOptions) => number | false}
+ * @type {(
+ *   text: string,
+ *   index: number | false,
+ *   opts?: SkipOptions
+ * ) => number | false}
  */
 const skipEverythingButNewLine = skip(/[^\n\r]/);
 
@@ -341,12 +359,9 @@ function getIndentSize(value, tabWidth) {
   );
 }
 
-/**
- * @typedef {'"' | "'"} Quote
- */
+/** @typedef {'"' | "'"} Quote */
 
 /**
- *
  * @param {string} raw
  * @param {Quote} preferredQuote
  * @returns {Quote}
@@ -356,9 +371,9 @@ function getPreferredQuote(raw, preferredQuote) {
   // code, without its enclosing quotes.
   const rawContent = raw.slice(1, -1);
 
-  /** @type {{ quote: '"', regex: RegExp }} */
+  /** @type {{ quote: '"'; regex: RegExp }} */
   const double = { quote: '"', regex: /"/g };
-  /** @type {{ quote: "'", regex: RegExp }} */
+  /** @type {{ quote: "'"; regex: RegExp }} */
   const single = { quote: "'", regex: /'/g };
 
   const preferred = preferredQuote === "'" ? single : double;
@@ -366,9 +381,11 @@ function getPreferredQuote(raw, preferredQuote) {
 
   let result = preferred.quote;
 
-  // If `rawContent` contains at least one of the quote preferred for enclosing
-  // the string, we might want to enclose with the alternate quote instead, to
-  // minimize the number of escaped quotes.
+  /**
+   * If `rawContent` contains at least one of the quote preferred for enclosing
+   * the string, we might want to enclose with the alternate quote instead, to
+   * minimize the number of escaped quotes.
+   */
   if (
     rawContent.includes(preferred.quote) ||
     rawContent.includes(alternate.quote)
@@ -386,12 +403,16 @@ function getPreferredQuote(raw, preferredQuote) {
 }
 
 function printString(raw, options, isDirectiveLiteral) {
-  // `rawContent` is the string exactly like it appeared in the input source
-  // code, without its enclosing quotes.
+  /**
+   * `rawContent` is the string exactly like it appeared in the input source
+   * code, without its enclosing quotes.
+   */
   const rawContent = raw.slice(1, -1);
 
-  // Check for the alternate quote, to determine if we're allowed to swap
-  // the quotes on a DirectiveLiteral.
+  /**
+   * Check for the alternate quote, to determine if we're allowed to swap the
+   * quotes on a DirectiveLiteral.
+   */
   const canChangeDirectiveQuotes =
     !rawContent.includes('"') && !rawContent.includes("'");
 
@@ -403,10 +424,12 @@ function printString(raw, options, isDirectiveLiteral) {
       ? "'"
       : getPreferredQuote(raw, options.singleQuote ? "'" : '"');
 
-  // Directives are exact code unit sequences, which means that you can't
-  // change the escape sequences they use.
-  // See https://github.com/prettier/prettier/issues/1555
-  // and https://tc39.github.io/ecma262/#directive-prologue
+  /**
+   * Directives are exact code unit sequences, which means that you can't change
+   * the escape sequences they use.
+   *     See https://github.com/prettier/prettier/issues/1555
+   *     and https://tc39.github.io/ecma262/#directive-prologue
+   */
   if (isDirectiveLiteral) {
     if (canChangeDirectiveQuotes) {
       return enclosingQuote + rawContent + enclosingQuote;

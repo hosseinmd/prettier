@@ -7,13 +7,10 @@
  * @property {string} type
  * @property {boolean} [hard]
  * @property {boolean} [literal]
- *
- * @typedef {string | DocObject} Doc
  */
+/** @typedef {string | DocObject} Doc */
 
-/**
- * @param {Doc} val
- */
+/** @param {Doc} val */
 function assertDoc(val) {
   /* istanbul ignore if */
   if (
@@ -70,7 +67,7 @@ function align(n, contents) {
 
 /**
  * @param {Doc} contents
- * @param {object} [opts] - TBD ???
+ * @param {object} [opts] TBD ???
  * @returns Doc
  */
 function group(contents, opts) {
@@ -116,7 +113,7 @@ function dedent(contents) {
 
 /**
  * @param {Doc[]} states
- * @param {object} [opts] - TBD ???
+ * @param {object} [opts] TBD ???
  * @returns Doc
  */
 function conditionalGroup(states, opts) {
@@ -138,7 +135,7 @@ function fill(parts) {
 /**
  * @param {Doc} [breakContents]
  * @param {Doc} [flatContents]
- * @param {object} [opts] - TBD ???
+ * @param {object} [opts] TBD ???
  * @returns Doc
  */
 function ifBreak(breakContents, flatContents, opts) {

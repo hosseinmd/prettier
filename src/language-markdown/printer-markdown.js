@@ -687,8 +687,8 @@ function printTable(path, options, print) {
 }
 
 function printRoot(path, options, print) {
-  /** @typedef {{ index: number, offset: number }} IgnorePosition */
-  /** @type {Array<{start: IgnorePosition, end: IgnorePosition}>} */
+  /** @typedef {{ index: number; offset: number }} IgnorePosition */
+  /** @type {{ start: IgnorePosition; end: IgnorePosition }[]} */
   const ignoreRanges = [];
 
   /** @type {IgnorePosition | null} */
@@ -811,7 +811,7 @@ function getLastDescendantNode(node) {
   return current;
 }
 
-/** @return {false | 'next' | 'start' | 'end'} */
+/** @returns {false | "next" | "start" | "end"} */
 function isPrettierIgnore(node) {
   if (node.type !== "html") {
     return false;

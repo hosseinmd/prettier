@@ -120,9 +120,7 @@ Path to a file containing patterns that describe files to ignore. By default, Pr
 Require a special comment, called a pragma, to be present in the file’s first docblock comment in order for Prettier to format it.
 
 ```js
-/**
- * @prettier
- */
+/** @prettier */
 ```
 
 Valid pragmas are `@prettier` and `@format`.

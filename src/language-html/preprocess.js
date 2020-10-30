@@ -60,9 +60,7 @@ function removeIgnorableFirstLf(ast /*, options */) {
 function mergeIeConditonalStartEndCommentIntoElementOpeningTag(
   ast /*, options */
 ) {
-  /**
-   *     <!--[if ...]><!--><target><!--<![endif]-->
-   */
+  //     <!--[if ...]><!--><target><!--<![endif]-->
   const isTarget = (node) =>
     node.type === "element" &&
     node.prev &&
@@ -296,11 +294,12 @@ function extractInterpolation(ast, options) {
 }
 
 /**
- * - add `hasLeadingSpaces` field
- * - add `hasTrailingSpaces` field
- * - add `hasDanglingSpaces` field for parent nodes
- * - add `isWhitespaceSensitive`, `isIndentationSensitive` field for text nodes
- * - remove insensitive whitespaces
+ * -
+ *     add `hasLeadingSpaces` field
+ *     add `hasTrailingSpaces` field
+ *     add `hasDanglingSpaces` field for parent nodes
+ *     add `isWhitespaceSensitive`,`isIndentationSensitive` field for text nodes
+ *     remove insensitive whitespaces
  */
 function extractWhitespaces(ast /*, options*/) {
   const TYPE_WHITESPACE = "whitespace";
@@ -422,9 +421,10 @@ function addCssDisplay(ast, options) {
 }
 
 /**
- * - add `isLeadingSpaceSensitive` field
- * - add `isTrailingSpaceSensitive` field
- * - add `isDanglingSpaceSensitive` field for parent nodes
+ * -
+ *     add `isLeadingSpaceSensitive` field
+ *     add `isTrailingSpaceSensitive` field
+ *     add `isDanglingSpaceSensitive` field for parent nodes
  */
 function addIsSpaceSensitive(ast, options) {
   return ast.map((node) => {

@@ -22,17 +22,20 @@ const {
 /**
  * @typedef {import("../../document").Doc} Doc
  * @typedef {import("../../common/fast-path")} FastPath
- *
- * @typedef {any} Options - Prettier options (TBD ...)
- *
+ * @typedef {any} Options Prettier options (TBD ...)
  * @typedef {Object} OperatorOptions
- * @property {() => Array<string | Doc>} beforeParts - Parts to print before the `?`.
- * @property {(breakClosingParen: boolean) => Array<string | Doc>} afterParts - Parts to print after the conditional expression.
- * @property {boolean} shouldCheckJsx - Whether to check for and print in JSX mode.
- * @property {string} conditionalNodeType - The type of the conditional expression node, ie "ConditionalExpression" or "TSConditionalType".
- * @property {string} consequentNodePropertyName - The property at which the consequent node can be found on the main node, eg "consequent".
- * @property {string} alternateNodePropertyName - The property at which the alternate node can be found on the main node, eg "alternate".
- * @property {string[]} testNodePropertyNames - The properties at which the test nodes can be found on the main node, eg "test".
+ * @property {() => Array<string | Doc>} beforeParts Parts to print before the `?`.
+ * @property {(breakClosingParen: boolean) => Array<string | Doc>} afterParts
+ *     Parts to print after the conditional expression.
+ * @property {boolean} shouldCheckJsx Whether to check for and print in JSX mode.
+ * @property {string} conditionalNodeType The type of the conditional expression
+ *     node, ie "ConditionalExpression" or "TSConditionalType".
+ * @property {string} consequentNodePropertyName The property at which the
+ *     consequent node can be found on the main node, eg "consequent".
+ * @property {string} alternateNodePropertyName The property at which the
+ *     alternate node can be found on the main node, eg "alternate".
+ * @property {string[]} testNodePropertyNames The properties at which the test
+ *     nodes can be found on the main node, eg "test".
  */
 
 // If we have nested conditional expressions, we want to print them in JSX mode
@@ -131,12 +134,12 @@ function conditionalExpressionChainContainsJSX(node) {
 }
 
 /**
- * The following is the shared logic for
- * ternary operators, namely ConditionalExpression
- * and TSConditionalType
- * @param {FastPath} path - The path to the ConditionalExpression/TSConditionalType node.
- * @param {Options} options - Prettier options
- * @param {Function} print - Print function to call recursively
+ * The following is the shared logic for ternary operators, namely
+ * ConditionalExpression and TSConditionalType
+ *
+ * @param {FastPath} path The path to the ConditionalExpression/TSConditionalType node.
+ * @param {Options} options Prettier options
+ * @param {Function} print Print function to call recursively
  * @param {OperatorOptions} operatorOptions
  * @returns {Doc}
  */
@@ -156,9 +159,11 @@ function printTernaryOperator(path, options, print, operatorOptions) {
   let forceNoIndent =
     parent.type === operatorOptions.conditionalNodeType && !isParentTest;
 
-  // Find the outermost non-ConditionalExpression parent, and the outermost
-  // ConditionalExpression parent. We'll use these to determine if we should
-  // print in JSX mode.
+  /**
+   * Find the outermost non-ConditionalExpression parent, and the outermost
+   * ConditionalExpression parent. We'll use these to determine if we should
+   * print in JSX mode.
+   */
   let currentParent;
   let previousParent;
   let i = 0;
@@ -186,9 +191,11 @@ function printTernaryOperator(path, options, print, operatorOptions) {
     jsxMode = true;
     forceNoIndent = true;
 
-    // Even though they don't need parens, we wrap (almost) everything in
-    // parens when using ?: within JSX, because the parens are analogous to
-    // curly braces in an if statement.
+    /**
+     * Even though they don't need parens, we wrap (almost) everything in parens
+     * when using ?: within JSX, because the parens are analogous to curly
+     * braces in an if statement.
+     */
     const wrap = (doc) =>
       concat([
         ifBreak("(", ""),
@@ -197,10 +204,12 @@ function printTernaryOperator(path, options, print, operatorOptions) {
         ifBreak(")", ""),
       ]);
 
-    // The only things we don't wrap are:
-    // * Nested conditional expressions in alternates
-    // * null
-    // * undefined
+    /**
+     * The only things we don't wrap are:
+     *     Nested conditional expressions in alternates
+     *     null
+     *     undefined
+     */
     const isNil = (node) =>
       node.type === "NullLiteral" ||
       (node.type === "Literal" && node.value === null) ||
@@ -246,9 +255,10 @@ function printTernaryOperator(path, options, print, operatorOptions) {
     );
   }
 
-  // We want a whole chain of ConditionalExpressions to all
-  // break if any of them break. That means we should only group around the
-  // outer-most ConditionalExpression.
+  /**
+   * We want a whole chain of ConditionalExpressions to all break if any of them
+   * break. That means we should only group around the outer-most ConditionalExpression.
+   */
   const comments = flat([
     ...operatorOptions.testNodePropertyNames.map(
       (propertyName) => node[propertyName].comments
@@ -288,16 +298,14 @@ function printTernaryOperator(path, options, print, operatorOptions) {
     concat(
       [].concat(
         ((testDoc) =>
-          /**
-           *     a
-           *       ? b
-           *       : multiline
-           *         test
-           *         node
-           *       ^^ align(2)
-           *       ? d
-           *       : e
-           */
+          //    a
+          //      ? b
+          //      : multiline
+          //        test
+          //        node
+          //      ^^ align(2)
+          //      ? d
+          //      : e
           parent.type === operatorOptions.conditionalNodeType &&
           parent[operatorOptions.alternateNodePropertyName] === node
             ? align(2, testDoc)
