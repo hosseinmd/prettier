@@ -45,10 +45,18 @@ const parsers = [
       // `TypeScript`, `toolsVersion`, `globalThis`
       'typeof process === "undefined" || process.browser': "false",
       'typeof globalThis === "object"': "true",
+      // `@typescript-eslint/typescript-estree` v4
+      'require("globby")': "{}",
+      "extra.projects = prepareAndTransformProjects(":
+        "extra.projects = [] || prepareAndTransformProjects(",
+      "process.versions.node": "'999.999.999'",
     },
   },
   {
     input: "src/language-js/parser-espree.js",
+  },
+  {
+    input: "src/language-js/parser-meriyah.js",
   },
   {
     input: "src/language-js/parser-angular.js",

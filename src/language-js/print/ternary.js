@@ -1,10 +1,9 @@
 "use strict";
 
 const flat = require("lodash/flatten");
-
-const { isJSXNode } = require("../utils");
 const { hasNewlineInRange } = require("../../common/util");
-const handleComments = require("../comments");
+const { isJSXNode, isBlockComment } = require("../utils");
+const { locStart, locEnd } = require("../loc");
 const {
   builders: {
     concat,
@@ -268,11 +267,11 @@ function printTernaryOperator(path, options, print, operatorOptions) {
   ]).filter(Boolean);
   const shouldBreak = comments.some(
     (comment) =>
-      handleComments.isBlockComment(comment) &&
+      isBlockComment(comment) &&
       hasNewlineInRange(
         options.originalText,
-        options.locStart(comment),
-        options.locEnd(comment)
+        locStart(comment),
+        locEnd(comment)
       )
   );
   const maybeGroup = (doc) =>

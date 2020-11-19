@@ -7,7 +7,7 @@ const {
 } = require("angular-html-parser/lib/compiler/src/parse_util");
 const { parse: parseFrontMatter } = require("../utils/front-matter");
 const createError = require("../common/parser-create-error");
-const { getParserName } = require("../common/util");
+const { inferParserByLanguage } = require("../common/util");
 const {
   HTML_ELEMENT_ATTRIBUTES,
   HTML_TAGS,
@@ -16,6 +16,7 @@ const {
 const { hasPragma } = require("./pragma");
 const { Node } = require("./ast");
 const { parseIeConditionalComment } = require("./conditional-comment");
+const { locStart, locEnd } = require("./loc");
 
 function ngHtmlParser(
   input,
@@ -73,7 +74,10 @@ function ngHtmlParser(
       }
       const langAttr = node.attrs.find((attr) => attr.name === "lang");
       const langValue = langAttr && langAttr.value;
-      return langValue == null || getParserName(langValue, options) === "html";
+      return (
+        langValue == null ||
+        inferParserByLanguage(langValue, options) === "html"
+      );
     };
     if (rootNodes.some(shouldParseAsHTML)) {
       let secondParseResult;
@@ -342,14 +346,6 @@ function _parse(text, options, parserOptions, shouldParseFrontMatter = true) {
 
     return node;
   });
-}
-
-function locStart(node) {
-  return node.sourceSpan.start.offset;
-}
-
-function locEnd(node) {
-  return node.sourceSpan.end.offset;
 }
 
 function createParser({

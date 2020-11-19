@@ -225,7 +225,17 @@ function replaceQuotesInInlineComments(text) {
   return text;
 }
 
+function locStart(node) {
+  return node.source.startOffset;
+}
+
+function locEnd(node) {
+  return node.source.endOffset;
+}
+
 module.exports = {
+  locStart,
+  locEnd,
   calculateLoc,
   replaceQuotesInInlineComments,
 };
