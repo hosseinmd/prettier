@@ -6,6 +6,8 @@ function composeOptionsForSnapshot(baseOptions, parsers) {
     filepath,
     parser,
     errors,
+    // Workaround to disable plugin search
+    pluginSearchDirs,
 
     ...snapshotOptions
   } = baseOptions;

@@ -388,7 +388,11 @@ function replacePlaceholders(originalText, originalOptions) {
     .filter(Boolean)
     .sort((a, b) => a.value - b.value);
 
-  const options = { ...originalOptions };
+  const options = {
+    ...originalOptions,
+    // Workaround to disable plugin search
+    pluginSearchDirs: ["/"],
+  };
   let text = originalText;
   let offset = 0;
   for (const { property, value, placeholder } of indexes) {
